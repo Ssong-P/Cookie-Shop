@@ -218,11 +218,11 @@
     <thead>
 		<tr class="active">
 			<td class="ct_list_b" width="100" align="center"><strong>No</strong></td>
-			<td class="ct_list_b" width="500" align="center"><strong>상품명</strong></td>
+			<td class="ct_list_b" width="400" align="center"><strong>상품명</strong></td>
 			<td class="ct_list_b" align="center"><strong>가격</strong></td>
 			<td class="ct_list_b" align="center"><strong>등록일</strong></td>	
 			<td class="ct_list_b" align="center"><strong>상품정보</strong></td>	
-			<td class="ct_list_b" align="center"><strong>현재상태</strong></td>	
+			<td class="ct_list_b" width="400" align="center"><strong>현재상태</strong></td>	
 		</tr>
 	</thead>
 
