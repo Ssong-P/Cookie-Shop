@@ -6,7 +6,6 @@
 
 <html lang="ko">
 
-<html>
 <head>
 
 <meta charset="EUC-KR">
@@ -50,7 +49,7 @@
 			//alert("hell...")
 			$("button.btn.btn-primary").click(function(){
 				alert(${product.prodNo})
-				self.location="/product/updateProduct?prodNo=${product.prodNo}"
+				self.location="/purchase/addPurchase?prodNo=${product.prodNo}";
 			});
 		});
 		
@@ -101,7 +100,7 @@
 		
 		<div class="row">
 	  		<div class="col-md-3" ><strong>상 품 이 미 지</strong></div>
-			<div class="col-md-3" >${product.fileName}</div>
+			<div class="col-md-3" ><img src="/images/uploadFiles/${product.fileName}"></div>
 		</div>
 		
 		<hr/>
@@ -130,7 +129,7 @@
 
 		<div class="form-group">
 		    <div class="col-sm-offset-4  col-sm-4 text-center">
-		      <button type="button" class="btn btn-primary"  >수&nbsp;정</button>
+		      <button type="button" class="btn btn-primary"  >구&nbsp;매</button>
 			  <a class="btn btn-primary btn" href="#" role="button">이전</a>
 		    </div>
 		</div>

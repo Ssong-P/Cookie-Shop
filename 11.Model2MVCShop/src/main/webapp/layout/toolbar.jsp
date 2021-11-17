@@ -74,16 +74,17 @@
 	                     <ul class="dropdown-menu">
 	                         <li><a href="#">상 품 검 색</a></li>
 	                         
-	                         <c:if test="${sessionScope.user.role == 'user'}">
+	                        
+					          <c:if test="${sessionScope.user.role == 'user'}">
 	                           <li><a href="#">구매이력조회</a></li>
-	                         </c:if>
+	                  		 </c:if>
+	                       
 	                         
 	                         <li><a href="#">최근본상품</a></li>
 	                         <li class="divider"></li>
 	                         <li><a href="#">etc..</a></li>
 	                     </ul>
 	                 </li>
-	                 
 	                <!--  <li><a href="#">etc...</a></li>  -->
 	             </ul>
 	             
@@ -137,9 +138,23 @@
 	 		
 	 	//=============  판매상품관리 Event  처리 =============	
 	 	$( function() {
-			//==> 추가된부분 : "addUser"  Event 연결
 			$("a:contains('판매상품관리')").click(function() {
-				self.location = "/product/listProduct"
+				self.location = "/product/listProduct?menu=manage"
+			});
+		});
+
+	 	
+	 	//=============  상 품 검 색 Event  처리 =============	
+	 	$( function() {
+			$("a:contains('상 품 검 색')").click(function() {
+				self.location = "/product/listProduct?menu=search"
+			});
+		});
+	 	
+	 	//=============  구매이력조회 Event  처리 =============	
+	 	$( function() {
+			$("a:contains('구매이력조회')").click(function() {
+				self.location = "/purchase/listPurchase"
 			});
 		});
 		

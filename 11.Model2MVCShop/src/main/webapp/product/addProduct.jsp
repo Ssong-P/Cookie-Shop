@@ -100,7 +100,7 @@
 		
 		<div class="row">
 	  		<div class="col-xs-4 col-md-2"><strong>상 품 이 미 지</strong></div>
-			<div class="col-xs-8 col-md-4">${product.fileName}</div>
+			<div class="col-xs-8 col-md-4"><img src="/images/uploadFiles/${product.fileName}"></div>
 		</div>
 		
 

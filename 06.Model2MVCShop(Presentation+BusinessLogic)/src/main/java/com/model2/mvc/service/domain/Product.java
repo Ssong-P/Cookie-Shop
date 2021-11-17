@@ -21,7 +21,15 @@ public class Product {
 		return proTranCode;
 	}
 	public void setProTranCode(String proTranCode) {
+
+//		System.out.println("Domain product : "+proTranCode);
+//		
+//		if(proTranCode == null || proTranCode == "" || proTranCode.equals("")) {
+//			proTranCode = "000";
+//		}
+//		
 		this.proTranCode = proTranCode;
+		
 	}
 	public String getFileName() {
 		return fileName;
@@ -68,7 +76,7 @@ public class Product {
 
 	// Override
 	public String toString() {
-		return "ProductVO : [fileName]" + fileName
+		return "ProductVO : [fileName]" + fileName +"[tranCode]" + proTranCode
 				+ "[manuDate]" + manuDate+ "[price]" + price + "[prodDetail]" + prodDetail
 				+ "[prodName]" + prodName + "[prodNo]" + prodNo;
 	}	

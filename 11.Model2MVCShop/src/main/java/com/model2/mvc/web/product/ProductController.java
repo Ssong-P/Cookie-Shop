@@ -1,5 +1,6 @@
 package com.model2.mvc.web.product;
 
+import java.io.File;
 import java.util.Map;
 
 import javax.servlet.http.Cookie;
@@ -11,10 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.model2.mvc.common.Page;
@@ -45,39 +48,43 @@ public class ProductController {
 	
 	@Value("#{commonProperties['pageSize']}")
 	int pageSize;
+	
+	// 파일 저장경로 지정
+	private static final String FILE_SERVER_PATH = "C:\\Users\\songs\\git\\mini_PJT\\11.Model2MVCShop\\src\\main\\webapp\\images\\uploadFiles\\";
 
 	
-	
-	//@RequestMapping("/addProductView.do")
-	//public ModelAndView addProductView() throws Exception{
+
 	@RequestMapping(value="addProduct", method=RequestMethod.GET)
-	public ModelAndView addProduct() throws Exception {
+	public String addProduct() throws Exception {
 		
 		System.out.println(":: product/addProduct : GET");
 
-		modelAndView.setViewName("forward:/product/addProductView.jsp");
-		
-		return modelAndView;
+		return "forward:/product/addProductView.jsp";
 		
 	}
 	
 	
-	//@RequestMapping("/addProduct.do")
-	//public ModelAndView addProduct(@ModelAttribute("product") Product product, 
-	//							HttpServletRequest request, HttpSession session) throws Exception{
 	@RequestMapping(value="addProduct", method=RequestMethod.POST)
-	public ModelAndView addProduct(@ModelAttribute("product") Product product,
-									 HttpServletRequest request, HttpSession session) throws Exception {
+	public String addProduct(@ModelAttribute("product") Product product,
+									@RequestParam("fileName1") MultipartFile file, 
+									 Model model) throws Exception {
 	
 		System.out.println(":: /product/addProduct : POST");
 		
+		if(!file.getOriginalFilename().isEmpty()) {
+			file.transferTo(new File(FILE_SERVER_PATH, file.getOriginalFilename()));
+			model.addAttribute("msg", "File uploaded successfully.");
+		}else {
+			model.addAttribute("msgs", "Please select a valid mediaFile..");
+		}
+		
+		product.setFileName(file.getOriginalFilename());
+		
 		productService.addProduct(product);
-		session.setAttribute("product", product);
 		
-		modelAndView.setViewName("redirect:/product/addProduct.jsp");
+		model.addAttribute("product",product);
 		
-		// 리턴값이 null이다~
-		return modelAndView;
+		return "forward:/product/addProduct.jsp";
 	}
 	
 	
@@ -173,41 +180,40 @@ public class ProductController {
 	
 	
 	
-	//@RequestMapping("/updateProductView.do")
-	//public ModelAndView updateProductView( @RequestParam("prodNo") int prodNo
-	//										, HttpServletRequest request, HttpSession session) throws Exception {
 	@RequestMapping(value="updateProduct", method=RequestMethod.GET)
-	public ModelAndView updateProduct( @RequestParam("prodNo") int prodNo, 
-										HttpServletRequest request, HttpSession session) throws Exception {
+	public String updateProduct( @RequestParam("prodNo") int prodNo, 
+									Model model) throws Exception {
 						
 		System.out.println(":: product/updateProduct : GET");
 		
 		Product product = productService.getProduct(prodNo);
-		modelAndView.addObject("product", product);
+		model.addAttribute("product",product);
 		
-		modelAndView.setViewName("forward:/product/updateProductView.jsp");
-		
-		return modelAndView;
+		return "forward:/product/updateProductView.jsp";
 	}
 	
 	
 	
-	//@RequestMapping("/updateProduct.do")
-	//public ModelAndView updateProduct( @ModelAttribute("product") Product product, 
-	//									HttpServletRequest request, HttpSession session) throws Exception{
 	@RequestMapping(value="updateProduct", method=RequestMethod.POST)
-	public ModelAndView updateProduct( @ModelAttribute("product") Product product, 
-										HttpServletRequest request, HttpSession session) throws Exception {
+	public String updateProduct( @ModelAttribute("product") Product product, 
+										@RequestParam("fileName1") MultipartFile file, 
+										Model model, HttpSession session) throws Exception {
 	
 		System.out.println(":: product/updateProduct : POST");
 		
+		if(!file.getOriginalFilename().isEmpty()) {
+			file.transferTo(new File(FILE_SERVER_PATH, file.getOriginalFilename()));
+			model.addAttribute("msg", "File uploaded successfully.");
+		}else {
+			model.addAttribute("msgs", "Please select a valid mediaFile..");
+		}
+		
+		product.setFileName(file.getOriginalFilename());
 		productService.updateProduct(product);
+		
 		session.setAttribute("product", product);
 		
-		modelAndView.addObject("product", product);
-		modelAndView.setViewName("redirect:/product/getProduct?prodNo="+product.getProdNo()+"&menu=search");
-		
-		return modelAndView;
+		return "redirect:/product/getProduct?prodNo="+product.getProdNo()+"&menu=search";
 	}
 
 }

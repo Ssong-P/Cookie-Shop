@@ -63,8 +63,12 @@ public class ProductController {
 		
 		System.out.println("/addProduct.do");
 		
+		product.setProTranCode("000");
+		
 		productService.addProduct(product);
 		session.setAttribute("product", product);
+		
+		System.out.println(">>>>>>>>>>"+product.getProTranCode()+"<<<<<<<<<<<");
 		
 		modelAndView.setViewName("redirect:/product/addProduct.jsp");
 		
@@ -79,8 +83,7 @@ public class ProductController {
 		
 		System.out.println(":: getProduct ::");
 		
-		Product product = productService.getProduct(prodNo);
-		
+		Product product = productService.getProduct(prodNo);	
 		modelAndView.addObject("product", product);
 		
 		String menu = request.getParameter("menu");
@@ -107,7 +110,7 @@ public class ProductController {
 		System.out.println("product :: " + search);
 		
 		Map<String, Object> map = productService.getProductList(search);
-		
+		System.out.println("!!!!!!!!!!!!!!!!!!!!!"+map.get("list"));
 		Page resultPage = new Page(search.getCurrentPage(), ((Integer)map.get("totalCount")).intValue(), pageUnit, pageSize);
 		System.out.println(resultPage);
 		
@@ -115,6 +118,7 @@ public class ProductController {
 		modelAndView.addObject("resultPage", resultPage);
 		modelAndView.addObject("search", search);
 		
+	
 		modelAndView.setViewName("forward:/product/listProduct.jsp");
 		
 		return modelAndView;

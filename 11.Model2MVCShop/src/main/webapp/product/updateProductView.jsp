@@ -4,8 +4,6 @@
 <!DOCTYPE html>
 
 <html lang="ko">
-
-<html>
 <head>
 	<meta charset="EUC-KR">
 	
@@ -71,7 +69,7 @@
 			return;
 		}
 		
-		$("form").attr("method","POST").attr("action","/product/updateProduct").submit();
+		$("form").attr("method","POST").attr("action","/product/updateProduct").attr("enctype","multipart/form-data").submit();
 		
 	}
 	
@@ -94,7 +92,7 @@
 				//self.location="/product/updateProduct?prodNo=${product.prodNo}"
 				fncupdateProduct();
 			});
-		});
+	});
 		
 	$(function() {
 		 $( "a[href='#']" ).click( function() {
@@ -190,7 +188,7 @@
 	<div class="form-group">
 	    <label for="userName" class="col-sm-offset-1 col-sm-3 control-label">상품이미지</label>
 	    <div class="col-sm-4">
-	      <input type="text" class="form-control" id="fileName" name="fileName" value="${product.fileName}">
+	      <input type="file" class="form-control" id="fileName1" name="fileName1" value="/images/uploadFiles/${product.fileName}">
 	    </div>
 	  </div>
 	

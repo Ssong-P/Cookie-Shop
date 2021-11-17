@@ -77,7 +77,7 @@
 			return;
 		}
 		
-		$("form").attr("method","POST").attr("action","/product/addProduct").submit();
+		$("form").attr("method","POST").attr("action","/product/addProduct").attr("enctype","multipart/form-data").submit();
 		
 	}
 	
@@ -176,7 +176,7 @@
 			<div class="form-group">
 			    <label for="userName" class="col-sm-offset-1 col-sm-3 control-label">상품이미지</label>
 			    <div class="col-sm-4">
-			      <input type="text" class="form-control" id="fileName" name="fileName" placeholder="상품이미지">
+			      <input type="file" class="form-control" id="fileName1" name="fileName1" placeholder="상품이미지">
 			    </div>
 			  </div>
 			

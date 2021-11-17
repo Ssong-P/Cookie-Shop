@@ -42,6 +42,22 @@
       .ct_list_b{
       	color : #6593A6;
       }
+      
+      img {
+      	width: auto; height: auto;
+	    max-width: 300px;
+	    max-height: 300px;
+      }
+      
+      .cookie {
+      width: auto; height: auto;
+      	width: 300px;
+		  height: 300px;
+		  object-fit: cover;
+		  margin: 0px auto;
+		  
+      }
+      
     </style>
 <script type="text/javascript">
 
@@ -53,6 +69,15 @@
 		$("#currentPage").val(currentPage)
 		$("form").attr("method","POST").attr("action","/product/listProduct").submit();
 	}
+	
+	$(function() {
+		 //==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
+		 $( "button.btn.btn-default" ).on("click" , function() {
+		fncGetUserList(1);
+		});
+	 });
+	
+	
 	
 	
 	//ProdName 상품정보보기
@@ -69,11 +94,11 @@
 	
 	$(function(){
 
-		$("td.ct_btn01:contains('검색')").click(function(){
+/* 		$("td.ct_btn01:contains('검색')").click(function(){
 			alert("돌아가라")
 			fncGetUserList(1);
 		});
-			
+			 */
 		
 		$(".ct_list_pop td:nth-child(6)").click(function(){
 		//	self.location="/product/getProduct?prodNo="+$(this).find("input[name=prodNo]").val()+"&menu=${param.menu}";	
@@ -94,17 +119,17 @@
 						
 						//alert("JSONData : "+JSONData);
 						
-						var displayValue = "<h3>"
+						var displayValue = "<h6>"
+										+ "<img src='/images/uploadFiles/"+JSONData.fileName+"'/></br></br></br></br>"
 										+ "상품번호 : "+JSONData.prodNo+"</br>"
 										+ "상품명 : "+JSONData.prodName+"</br>"
-										+ "상품이미지 : "+JSONData.fileName+"</br>"
 										+ "상품상세정보 : "+JSONData.prodDetail+"</br>"
 										+ "제조일자 : "+JSONData.manuDate+"</br>"
 										+ "가격 : "+JSONData.price+"</br>"
-										+ "</h3>";	
+										+ "</h6>";	
 						
 						//alert(displayValue);		
-						$("h3").remove();
+						$("h6").remove();
 						$("#"+prodNo+"").html(displayValue);
 					}
 				});		
@@ -134,47 +159,23 @@
 	<!-- Post 방식 & menu에 대한 value값(search, update)를 받기  -->
 	<form name="detailForm" action="/product/listProduct?menu=${param.menu}" method="post">
 	<input type="hidden" id="menu" name="menu" value="${param.menu}">
-	
-		<div class="page-header text-info">
-	       <h3>상품목록조회</h3>
-	    </div>
-	
-<!-- 
-<table width="100%" height="37" border="0" cellpadding="0"	cellspacing="0">
-	<tr>
-		<td width="15" height="37">
-			<img src="/images/ct_ttl_img01.gif" width="15" height="37"/>
-		</td>
-		<td background="/images/ct_ttl_img02.gif" width="100%" style="padding-left:10px;">
-			<table width="100%" border="0" cellspacing="0" cellpadding="0">
-				<tr>
-					<td width="93%" class="ct_ttl01">
-					 -->
+
+
 					<c:if test= "${param.menu == 'manage'}">
 						<%--<c:set var="title" value="상품관리"/>  --%>
 						<div class="page-header text-info">
-	      					<h3>상품관리</h3>
+	      					<h3>쿠키 관리</h3>
 	   					</div>
 					</c:if>
 					
 					<c:if test= "${param.menu == 'search'}">
 						<%-- <c:set var="title" value="상품목록조회"/>  --%>
 						<div class="page-header text-info">
-	      					<h3>상품목록조회</h3>
+	      					<h3>쿠키 검색</h3>
 	   					</div>
 					</c:if>
 					
 							${title}
-	<!-- 				
-					</td>
-				</tr>
-			</table>  
-		</td>
-		<td width="12" height="37">
-			<img src="/images/ct_ttl_img03.gif" width="12" height="37"/>
-		</td>
-	</tr>
-</table> -->
 
 		
  		<div class="row">
@@ -213,6 +214,7 @@
 		
 
 				<br>
+	<c:if test= "${param.menu == 'manage'}">		
 	<table class="table table-hover table-striped" >
       
     <thead>
@@ -222,7 +224,7 @@
 			<td class="ct_list_b" align="center"><strong>가격</strong></td>
 			<td class="ct_list_b" align="center"><strong>등록일</strong></td>	
 			<td class="ct_list_b" align="center"><strong>상품정보</strong></td>	
-			<td class="ct_list_b" width="400" align="center"><strong>현재상태</strong></td>	
+			<td class="ct_list_b" width="300" align="center"><strong>현재상태</strong></td>	
 		</tr>
 	</thead>
 
@@ -237,7 +239,38 @@
 			</td>
 			<td align="center">${product.price}</td>
 			<td align="center">${product.manuDate}</td>
-			<td align="center">준비중</td>
+			<td align="center">
+					<c:choose>
+						<c:when test="${user.role eq 'admin'}"> 
+							<c:choose >
+								<c:when test="${product.proTranCode eq null }">
+									판매 중
+								</c:when>
+								<c:when test="${product.proTranCode eq '001'}">
+									구매
+									<a href="/purchase/updateTranCodeByProd?prodNo=${product.prodNo}&tranCode=002">배송하기</a>
+								</c:when>
+								<c:when test="${product.proTranCode eq '002'}">
+									배송 중
+								</c:when>
+								<c:when test="${product.proTranCode eq '003'}">
+									배송완료
+								</c:when>
+							</c:choose>
+						</c:when>
+					
+						<c:when test="${user.role eq 'user'}"> 
+							<c:choose>
+								<c:when test="${product.proTranCode eq null }">
+									판매 중
+								</c:when>
+								<c:otherwise>
+									판매 완료
+								</c:otherwise>
+							</c:choose>
+						</c:when>
+					</c:choose>
+			</td>
 			<td align="center" title="Click : 상품정보 확인">
 				<i class="glyphicon glyphicon-search" id= "${product.prodNo}"></i>
 				<input type="hidden" id="prodNo" name="prodNo" value="${product.prodNo}">
@@ -246,8 +279,39 @@
 	 </c:forEach>
 	 </tbody>
 	 
-</table>
+	</table>
+	</c:if>
+	
+	
+	<c:if test= "${param.menu == 'search'}">
+
+		<div class="row">
+		<c:set var="i" value="0" />
+	 		<c:forEach var="product" items="${list}">
+	 	<c:set var="i" value="${i+1}"/>
+			
+		  <div class="col-sm-6 col-md-4">
+		    <div class="thumbnail">
+		    	<div class = "cookie" align="center">
+		      <img src="/images/uploadFiles/${product.fileName}">
+		      </div>
+		      <div class="caption">
+		        <h4>${product.prodName}</h4>
+		        <p>${product.price}</p>
+		        <p><a href="/purchase/addPurchase?prodNo=${product.prodNo}" class="btn btn-primary" role="button">쿠키구매</a> 
+		        <a href="/product/getProduct?prodNo=${product.prodNo}&menu=${param.menu}" class="btn btn-default" role="button">
+		        상세정보</a></p>
+		      </div>
+		    </div>
+		  </div>
+
 		
+	 </c:forEach>
+		</div>
+
+	
+	</c:if>
+	
 			<jsp:include page="../common/pageNavigator_new.jsp"/>
 
 

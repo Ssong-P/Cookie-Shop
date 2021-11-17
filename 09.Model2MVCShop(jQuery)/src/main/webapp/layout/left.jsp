@@ -67,7 +67,7 @@
 			})
 			
 			$(".Depth03:contains('구매이력조회')").click(function(){
-				$(window.parent.frames["rightFrame"].document.location).attr("href","/product/listPurchase")
+				$(window.parent.frames["rightFrame"].document.location).attr("href","/purchase/listPurchase")
 			})
 			
 			$(".Depth03:contains('최근본상품')").click(function(){

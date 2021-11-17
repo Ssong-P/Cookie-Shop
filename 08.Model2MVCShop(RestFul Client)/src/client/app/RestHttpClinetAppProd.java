@@ -35,7 +35,7 @@ public class RestHttpClinetAppProd {
 
 //		System.out.println("\n========================================\n");
 //		2. getProduct : Codehaus
-//		RestHttpClinetAppProd.getProdTest_Codehaus();
+		RestHttpClinetAppProd.getProdTest_Codehaus();
 
 //		System.out.println("\n========================================\n");
 //		3. updateProduct : Codehaus
@@ -43,7 +43,7 @@ public class RestHttpClinetAppProd {
 
 //		System.out.println("\n========================================\n");
 //		4. getProductList : Codehaus
-		RestHttpClinetAppProd.getProdListTest_Codehaus();
+//		RestHttpClinetAppProd.getProdListTest_Codehaus();
 
 	}
 	

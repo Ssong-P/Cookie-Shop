@@ -15,6 +15,8 @@
 		<result property="price" 			column="price" 				jdbcType="NUMERIC" />
 		<result property="fileName" 		column="image_file" 		jdbcType="VARCHAR" />
 		<result property="regDate" 			column="reg_date" 			jdbcType="DATE" />
+		<result property="proTranCode" 		column="tran_status_code" 	jdbcType="DATE" />
+	
 	</resultMap>
 	
 	<!-- SQL : INSERT -->
@@ -33,9 +35,10 @@
 	 <!-- SQL : SELECT ONE -->
 	 <select 	id="getProduct"	parameterType="int"	resultMap="productSelectMap">
 		SELECT
-		prod_no , prod_name , prod_detail , manufacture_day , price, image_file, reg_date		
-		FROM product
-		WHERE prod_no = #{value}
+		p.prod_no , p.prod_name , p.prod_detail , p.manufacture_day , p.price, p.image_file, p.reg_date, t.tran_status_code 	
+		FROM product p, transaction t 
+		WHERE p.prod_no = t.prod_no(+) 
+		AND p.prod_no = #{value}
 	 </select>
 	 
 	 <!-- SQL : UPDATE -->
@@ -44,7 +47,7 @@
 	   	<set>
 	   		prod_name 			= #{prodName} ,
 			prod_detail			= #{prodDetail},
-			manufacture_day 	= #{manuDate} ,
+			manufacture_day 	= TO_CHAR(TO_DATE(#{manuDate:VARCHAR},'YYYY-MM-DD'), 'YYYYMMDD') ,
 			price				= #{price} ,
 			image_file			= #{fileName}
 	   	</set>
@@ -53,7 +56,7 @@
 		 
 	<!-- SQL : SELECT LIST -->
 	<select  id="getProductList"  parameterType="search"	resultMap="productSelectMap">
-	  	SELECT *
+	  	<!-- SELECT *
 	  	FROM (	SELECT inner_table.* , ROWNUM AS row_seq
 	  					FROM		(	SELECT prod_no , prod_name , price, manufacture_day
 											FROM product
@@ -73,7 +76,30 @@
 											</if>
 											ORDER BY prod_no ) inner_table
 						WHERE ROWNUM &lt;= #{endRowNum} )
-		WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum} 
+		WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum}  -->
+		
+		SELECT * 
+	  	FROM (	SELECT inner_table.* , ROWNUM AS row_seq
+	  					FROM		(	SELECT p.prod_no , p.prod_name , p.price, p.manufacture_day,  t.tran_status_code  
+											FROM product p, transaction t 
+										 	WHERE p.prod_no = t.prod_no(+) 
+												
+												<if test="searchCondition != null">
+												<bind name="searchKeywords" value="'%' + searchKeyword + '%'"/>				
+													<if test="searchCondition == 0 and searchKeyword !='' ">
+										 				AND p.prod_no LIKE #{searchKeywords}
+													</if>
+													<if test="searchCondition == 1 and searchKeyword !='' ">
+										 				AND p.prod_name LIKE #{searchKeywords}
+													</if>
+													<if test="searchCondition == 2 and searchKeyword !='' ">
+										 				AND p.price LIKE #{searchKeywords}
+													</if>	
+											</if>
+						) inner_table 
+						WHERE ROWNUM &lt;= #{endRowNum} )
+		WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum}
+		
 	 </select>
 	 	<!--  위 두번째 subQuery 의  
 	 			WHERE ROWNUM &lt;= #{endRowNum} ) 는

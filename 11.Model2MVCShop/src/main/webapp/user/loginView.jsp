@@ -20,10 +20,16 @@
 	
 	<!--  ///////////////////////// CSS ////////////////////////// -->
 	<style>
-    	 body >  div.container{ 
-        	border: 3px solid #D6CDB7;
-            margin-top: 10px;
-        }
+	
+		h4{
+			color : #fd7622;
+		}
+		
+		body{
+		    background-size: cover;
+		}
+
+
     </style>
     
     <!--  ///////////////////////// JavaScript ////////////////////////// -->
@@ -81,18 +87,23 @@
 	<!--  화면구성 div Start /////////////////////////////////////-->
 	<div class="container">
 		<!--  row Start /////////////////////////////////////-->
-		<div class="row">
 		
-			<div class="col-md-6">
-					<img src="/images/logo-spring.png" class="img-rounded" width="100%" />
-			</div>
+		
+		
+		<div class="row">
+			
+			<div class="col-md-3"></div>
 	   	 	
 	 	 	<div class="col-md-6">
 	 	 	
 		 	 	<br/><br/>
 				
-				<div class="jumbotron">	 	 	
-		 	 		<h1 class="text-center">로 &nbsp;&nbsp;그 &nbsp;&nbsp;인</h1>
+				<div >	 	 	
+		 	 		<h4 class="text-center"><strong>회원로그인</strong></h4>
+		 	 		<div class="item active">
+				      <img src="./logo.png">
+				    </div>
+		 	 		</br>
 
 			        <form class="form-horizontal">
 		  

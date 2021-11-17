@@ -205,7 +205,40 @@
 			<td></td>
 				<td align="left">${product.manuDate}</td>
 			<td></td>
-				<td align="left">null</td>
+				<td align="left">
+						
+					<c:choose>
+						<c:when test="${user.role eq 'admin'}"> 
+							<c:choose >
+								<c:when test="${product.proTranCode eq null }">
+									판매 중
+								</c:when>
+								<c:when test="${product.proTranCode eq '001'}">
+									구매
+									<a href="/updateTranCodeByProd.do?prodNo=${product.prodNo}&tranCode=002">배송하기</a>
+								</c:when>
+								<c:when test="${product.proTranCode eq '002'}">
+									배송 중
+								</c:when>
+								<c:when test="${product.proTranCode eq '003'}">
+									배송완료
+								</c:when>
+							</c:choose>
+						</c:when>
+					
+						<c:when test="${user.role eq 'user'}"> 
+							<c:choose>
+								<c:when test="${product.proTranCode eq null }">
+									판매 중
+								</c:when>
+								<c:otherwise>
+									판매 완료
+								</c:otherwise>
+							</c:choose>
+						</c:when>
+					</c:choose>
+				
+				</td>
 			<td></td>
 		</tr>
 		<tr>
